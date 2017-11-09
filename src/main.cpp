@@ -17,7 +17,7 @@ int main(void) {
 		if (first.at(i).find("Transit") != std::string::npos) {
 			transit++;
 		}
-		if (first.at(i).find("Enterprise") != std::string::npos) {
+		if (first.at(i).find("Enterpise") != std::string::npos) {
 			enterprise++;
 		}
 		if (first.at(i).find("Content") != std::string::npos) {
@@ -25,7 +25,7 @@ int main(void) {
 		}
 	}
 	std::cout << "Transit " << transit << std::endl;
-	std::cout << "Enterprise " << enterprise << std::endl;
+	std::cout << "Enterpise " << enterprise << std::endl;
 	std::cout << "Content " << content << std::endl;
 
 	return 0;
