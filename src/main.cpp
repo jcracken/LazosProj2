@@ -27,4 +27,6 @@ int main(void) {
 	std::cout << "Transit " << transit << std::endl;
 	std::cout << "Enterprise " << enterprise << std::endl;
 	std::cout << "Content " << content << std::endl;
+
+	return 0;
 }
