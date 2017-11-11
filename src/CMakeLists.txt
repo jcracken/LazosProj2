@@ -13,7 +13,7 @@ if(MSVC)
     add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
 else()
     # adds debug information for all other OSs
-    add_definitions(-Wall -g -std=c11)
+    add_definitions(-Wall -g -std=c++11)
 endif()
 
 # The following file GLOB command will search for all files within the current directory
