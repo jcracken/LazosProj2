@@ -16,6 +16,7 @@ int main(void) {
 	int j = 0;
 	std::vector<std::string> first = partOneParse();
 	std::vector<std::string> second = partTwoParse();
+	std::vector<AS> secondAS;
 	for (int i = 0; i < first.size(); i++) {
 		if (first.at(i).find("Transit") != std::string::npos) {
 			transit++;
@@ -32,7 +33,27 @@ int main(void) {
 	std::cout << "Content " << content << std::endl;
 
 	for (int i = 0; i < second.size(); i = i + 3) {
-
+		int temp = std::stoi(second.at(i));
+		if (i == 0) { //idk if this if branch is needed lol
+			secondAS.push_back(AS(temp));
+			j = 0;
+		}
+		else {
+			for (j = 0; j < secondAS.size(); j++) {
+				if (secondAS.at(j).getNum() == temp) break;
+			}
+			if (j == secondAS.size()) {
+				secondAS.push_back(AS(temp));
+			}
+		}
+		if (std::stoi(second.at(i + 2)) == -1) {
+			secondAS.at(j).setCust(secondAS.at(j).getCust() + 1);
+			secondAS.at(j).setConns(secondAS.at(j).getConns() + 1);
+		}
+		else {
+			secondAS.at(j).setConns(secondAS.at(j).getConns() + 0.5);
+		}
+		//need to handle ip bullshit
 	}
 
 	return 0;
