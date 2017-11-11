@@ -9,5 +9,6 @@
 #include <cstdlib>
 
 std::vector<std::string> partOneParse();
+std::vector<std::string> partTwoParse();
 
 #endif
