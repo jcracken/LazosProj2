@@ -28,4 +28,4 @@ private:
 	float connections;
 };
 
-#endif AS_H
+#endif

@@ -55,6 +55,6 @@ int main(void) {
 		}
 		//need to handle ip bullshit
 	}
-
+	std::cout << secondAS.size() << std::endl;
 	return 0;
 }
