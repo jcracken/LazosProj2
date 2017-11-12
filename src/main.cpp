@@ -14,6 +14,7 @@ int main(void) {
 	int enterprise = 0;
 	int content = 0;
 	int j = 0;
+	int k = 0;
 	std::vector<std::string> first = partOneParse();
 	std::vector<std::string> second = partTwoParse();
 	std::vector<AS> secondAS;
@@ -47,13 +48,17 @@ int main(void) {
 			}
 		}
 		if (std::stoi(second.at(i + 2)) == -1) {
-			secondAS.at(j).setCust(secondAS.at(j).getCust() + 1);
-			secondAS.at(j).setConns(secondAS.at(j).getConns() + 1);
+			secondAS.at(k).setCust(std::stoi(second.at(i + 1)));
+			secondAS.at(k).setConns(std::stoi(second.at(i + 1)));
 		}
 		else {
-			secondAS.at(j).setConns(secondAS.at(j).getConns() + 0.5);
+			secondAS.at(k).setConns(std::stoi(second.at(i + 1)));
 		}
 		//need to handle ip bullshit
+	}
+	for (j = 0; j < secondAS.size(); j++) {
+		std::cout << secondAS.at(j).getCust().size() << std::endl;
+		std::cout << secondAS.at(j).getConns().size() << std::endl;
 	}
 	std::cout << secondAS.size() << std::endl;
 	return 0;

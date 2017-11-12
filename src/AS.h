@@ -11,21 +11,21 @@
 class AS {
 public:
 	AS();
-	AS(int number, float connections, std::vector<std::string> ip, int customers);
+	AS(int number, int connections, std::vector<std::string> ip, int customers);
 	AS(int number);
 	int getNum();
-	float getConns();
-	int getCust();
+	std::vector<int> getConns();
+	std::vector<int> getCust();
 	std::vector<std::string> getIP();
 	void setNum(int num);
-	void setConns(float connections);
+	void setConns(int connections);
 	void setIP(std::vector<std::string> ip);
 	void setCust(int customers);
 private:
 	std::vector<std::string> ip;
 	int number;
-	int customers;
-	float connections;
+	std::vector<int> customers;
+	std::vector<int> connections;
 };
 
 #endif

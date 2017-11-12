@@ -4,18 +4,16 @@ AS::AS() {
 	return;
 }
 
-AS::AS(int number, float connections, std::vector<std::string> ip, int customers) {
+AS::AS(int number, int connections, std::vector<std::string> ip, int customers) {
 	this->number = number;
-	this->connections = connections;
+	this->connections.push_back(connections);
 	this->ip = ip;
-	this->customers = customers;
+	this->customers.push_back(connections);
 	return;
 }
 
 AS::AS(int number) {
 	this->number = number;
-	this->connections = 0;
-	this->customers = 0;
 	return;
 }
 
@@ -23,11 +21,11 @@ int AS::getNum() {
 	return this->number;
 }
 
-float AS::getConns() {
+std::vector<int> AS::getConns() {
 	return this->connections;
 }
 
-int AS::getCust() {
+std::vector<int> AS::getCust() {
 	return this->customers;
 }
 
@@ -40,8 +38,8 @@ void AS::setNum(int num) {
 	return;
 }
 
-void AS::setConns(float connections) {
-	this->connections = connections;
+void AS::setConns(int connections) {
+	this->connections.push_back(connections);
 	return;
 }
 
@@ -51,6 +49,6 @@ void AS::setIP(std::vector<std::string> ip) {
 }
 
 void AS::setCust(int customers) {
-	this->customers = customers;
+	this->customers.push_back(customers);
 	return;
 }
