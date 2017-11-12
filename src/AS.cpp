@@ -43,8 +43,8 @@ void AS::setConns(int connections) {
 	return;
 }
 
-void AS::setIP(std::vector<std::string> ip) {
-	this->ip = ip;
+void AS::setIP(std::string ip) {
+	this->ip.push_back(ip);
 	return;
 }
 

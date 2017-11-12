@@ -19,7 +19,7 @@ public:
 	std::vector<std::string> getIP();
 	void setNum(int num);
 	void setConns(int connections);
-	void setIP(std::vector<std::string> ip);
+	void setIP(std::string ip);
 	void setCust(int customers);
 private:
 	std::vector<std::string> ip;
