@@ -10,5 +10,6 @@
 
 std::vector<std::string> partOneParse();
 std::vector<std::string> partTwoParse();
+std::vector<std::string> ipAddrParse();
 
 #endif

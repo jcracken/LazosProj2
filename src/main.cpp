@@ -17,6 +17,7 @@ int main(void) {
 	int k = 0;
 	std::vector<std::string> first = partOneParse();
 	std::vector<std::string> second = partTwoParse();
+	std::vector<std::string> ipaddr = ipAddrParse();
 	std::vector<AS> secondAS;
 	for (int i = 0; i < first.size(); i++) {
 		if (first.at(i).find("Transit") != std::string::npos) {
@@ -62,14 +63,23 @@ int main(void) {
 			}
 			secondAS.at(k).setConns(std::stoi(second.at(i)));
 		}
-		//need to handle ip bullshit
 	}
 	for (j = 0; j < secondAS.size(); j++) {
-		if (secondAS.at(j).getNum() == 393406) {
+		/*if (secondAS.at(j).getNum() == 393406) {
 			for (k = 0; k < secondAS.at(j).getConns().size(); k++) {
 				std::cout << secondAS.at(j).getConns().at(k) << std::endl;
 			}
-		}
+		}*/
+		/*for (k = 0; k < ipaddr.size(); k = k + 3) {
+			try {
+				if (std::stol(ipaddr.at(k + 2)) == secondAS.at(j).getNum()) {
+					secondAS.at(j).setIP(ipaddr.at(k));
+				}
+			}
+			catch (std::out_of_range& e) {
+				//shrug
+			}
+		}*/
 	}
 	return 0;
 }
