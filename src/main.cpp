@@ -53,15 +53,23 @@ int main(void) {
 		}
 		else {
 			secondAS.at(j).setConns(std::stoi(second.at(i + 1)));
+			int t1 = std::stoi(second.at(i + 1));
+			for (k = 0; k < secondAS.size(); k++) {
+				if (secondAS.at(k).getNum() == t1) break;
+			}
+			if (k == secondAS.size()) {
+				secondAS.push_back(AS(t1));
+			}
+			secondAS.at(k).setConns(std::stoi(second.at(i)));
 		}
 		//need to handle ip bullshit
 	}
 	for (j = 0; j < secondAS.size(); j++) {
-		if (secondAS.at(j).getNum() == 42) {
-			std::cout << secondAS.at(j).getCust().size() << std::endl;
-			std::cout << secondAS.at(j).getConns().size() << std::endl;
+		if (secondAS.at(j).getNum() == 393406) {
+			for (k = 0; k < secondAS.at(j).getConns().size(); k++) {
+				std::cout << secondAS.at(j).getConns().at(k) << std::endl;
+			}
 		}
 	}
-	std::cout << secondAS.size() << std::endl;
 	return 0;
 }
