@@ -6,6 +6,8 @@
 #include <iterator>
 #include <algorithm>
 #include <math.h>
+#include <map>
+#include <set>
 #include "parser.h"
 #include "AS.h"
 
@@ -17,8 +19,12 @@ int main(void) {
 	int k = 0;
 	std::vector<std::string> first = partOneParse();
 	std::vector<std::string> second = partTwoParse();
-	std::vector<std::string> ipaddr = ipAddrParse();
+	//std::vector<std::string> ipaddr = ipAddrParse();
 	std::vector<AS> secondAS;
+	std::map<int, std::vector<int>> mapAS; //this set holds pairs of {AS_num, Connections(includes customers)}
+
+	//2.1
+	
 	for (int i = 0; i < first.size(); i++) {
 		if (first.at(i).find("Transit") != std::string::npos) {
 			transit++;
@@ -34,6 +40,7 @@ int main(void) {
 	std::cout << "Enterpise " << enterprise << std::endl;
 	std::cout << "Content " << content << std::endl;
 
+	//2.2
 	for (int i = 0; i < second.size(); i = i + 3) {
 		int temp = std::stoi(second.at(i));
 		if (i == 0) { //idk if this if branch is needed lol
@@ -81,5 +88,57 @@ int main(void) {
 			}
 		}*/
 	}
+
+	//2.3
+	//degree = connections + customers
+
+	for (int i = 0; i < second.size(); i=i+3) {
+		int origin = std::stoi(second.at(i));
+		std::vector<int> originVector;
+		originVector.push_back(origin);
+		int connection = std::stoi(second.at(i + 1));
+		std::vector<int> connectionVector;
+		connectionVector.push_back(connection);
+		int type = std::stoi(second.at(i + 2)); //0 = peer, -1 = customer
+		int temp = 0;
+
+		if (mapAS.count(origin) == 0) {//Origin not found
+			mapAS.insert(std::make_pair(origin, connectionVector));
+		}
+		else {//Origin found
+			mapAS.at(origin).push_back(connection);
+		}
+
+		if (mapAS.count(connection) == 0) {//Connection not found
+			mapAS.insert(std::make_pair(connection, originVector));
+		}
+		else {//Connection found
+			mapAS.at(connection).push_back(origin);
+		}
+	}
+
+	std::ofstream output;
+	output.open("out3.txt");
+	output << "AS\tDegree";
+	for (auto const& x : mapAS) {
+		output << std::to_string(x.first) + "\t" + std::to_string(x.second.size()) + "\n";
+	}
+	output.close();
 	return 0;
+}
+
+// for 2.3, inspiration from stack overflow
+template<typename A, typename B>
+std::pair<B, A> flip_pair(const std::pair<A, B> &p)
+{
+	return std::pair<B, A>(p.second, p.first);
+}
+
+template<typename A, typename B>
+std::multimap<B, A> flip_map(const std::map<A, B> &src)
+{
+	std::multimap<B, A> dst;
+	std::transform(src.begin(), src.end(), std::inserter(dst, dst.begin()),
+		flip_pair<A, B>);
+	return dst;
 }
