@@ -17,9 +17,18 @@ int main(void) {
 	int content = 0;
 	int j = 0;
 	int k = 0;
+	int bin1 = 0;
+	int bin2 = 0;
+	int bin5 = 0;
+	int bin100 = 0;
+	int bin200 = 0;
+	int bin1000 = 0;
+	int transitAS = 0;
+	int enterpriseAS = 0;
+	int contentAS = 0;
 	std::vector<std::string> first = partOneParse();
 	std::vector<std::string> second = partTwoParse();
-	//std::vector<std::string> ipaddr = ipAddrParse();
+	std::vector<std::string> ipaddr = ipAddrParse();
 	std::vector<AS> secondAS;
 	std::map<int, std::vector<int>> mapAS; //this set holds pairs of {AS_num, Connections(includes customers)}
 
@@ -57,7 +66,15 @@ int main(void) {
 		}
 		if (std::stoi(second.at(i + 2)) == -1) {
 			secondAS.at(j).setCust(std::stoi(second.at(i + 1)));
-			secondAS.at(j).setConns(std::stoi(second.at(i + 1)));
+			/*secondAS.at(j).setConns(std::stoi(second.at(i + 1)));*/
+			int t1 = std::stoi(second.at(i + 1));
+			for (k = 0; k < secondAS.size(); k++) {
+				if (secondAS.at(k).getNum() == t1) break;
+			}
+			if (k == secondAS.size()) {
+				secondAS.push_back(AS(t1));
+			}
+			secondAS.at(k).setConns(std::stoi(second.at(i)));
 		}
 		else {
 			secondAS.at(j).setConns(std::stoi(second.at(i + 1)));
@@ -77,6 +94,16 @@ int main(void) {
 				std::cout << secondAS.at(j).getConns().at(k) << std::endl;
 			}
 		}*/
+		int tot = secondAS.at(j).getConns().size() + secondAS.at(j).getCust().size();
+		if (tot == 1) bin1++;
+		else if (tot <= 5) bin2++;
+		else if (tot <= 100) bin5++;
+		else if (tot <= 200) bin100++;
+		else if (tot <= 1000) bin200++;
+		else bin1000++;
+		if (secondAS.at(j).getCust().size() == 0 &&  tot <= 2) enterpriseAS++;
+		else if (secondAS.at(j).getCust().size() == 0 && tot > 0) contentAS++;
+		else if (secondAS.at(j).getCust().size() > 0) transitAS++;
 		/*for (k = 0; k < ipaddr.size(); k = k + 3) {
 			try {
 				if (std::stol(ipaddr.at(k + 2)) == secondAS.at(j).getNum()) {
@@ -88,6 +115,15 @@ int main(void) {
 			}
 		}*/
 	}
+	std::cout << bin1 << std::endl;
+	std::cout << bin2 << std::endl;
+	std::cout << bin5 << std::endl;
+	std::cout << bin100 << std::endl;
+	std::cout << bin200 << std::endl;
+	std::cout << bin1000 << std::endl;
+	std::cout << "Transit " << transitAS << std::endl;
+	std::cout << "Enterpise " << enterpriseAS << std::endl;
+	std::cout << "Content " << contentAS << std::endl;
 
 	//2.3
 	//degree = connections + customers
