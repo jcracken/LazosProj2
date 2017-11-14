@@ -11,16 +11,33 @@
 #include "parser.h"
 #include "AS.h"
 
+/*int countCust(int num, std::vector<AS> secondAS) {
+	int temp = 0;
+	for (int i = 0; i < secondAS.size(); i++) {
+		if (secondAS.at(i).getNum() == num) {
+			if (secondAS.at(i).getCust().size() > 0) {
+				for (int j = 0; j < secondAS.at(j).getCust().size(); j++) {
+					temp = temp + countCust(secondAS.at(i).getCust().at(j), secondAS);
+				}
+			}
+			return temp + secondAS.at(i).getCust().size();
+		}
+	}
+}*/
+
 int main(void) {
 	int transit = 0;
 	int enterprise = 0;
 	int content = 0;
 	int j = 0;
 	int k = 0;
+	int temp = 0;
 	std::vector<std::string> first = partOneParse();
 	std::vector<std::string> second = partTwoParse();
 	//std::vector<std::string> ipaddr = ipAddrParse();
+	std::vector<std::string> four;
 	std::vector<AS> secondAS;
+	std::vector<int> topAS;
 	std::map<int, std::vector<int>> mapAS; //this set holds pairs of {AS_num, Connections(includes customers)}
 	int bin1 = 0;
 	int bin2 = 0;
@@ -154,7 +171,7 @@ int main(void) {
 	std::cout << "Enterpise " << enterprise << std::endl;
 	std::cout << "Content " << content << std::endl;
 
-	//2.2 p2 w/ maps try: 
+	//2.2
 	for (auto const& x : mapASWithCust) {
 		int tot = x.second.at(0).size() + x.second.at(1).size() + x.second.at(2).size();
 		if (tot == 1) 
@@ -198,7 +215,31 @@ int main(void) {
 	}
 	output.close();
 
-	//2.4 goes below here
+	//2.4
+	/*for (int i = 0; i < secondAS.size(); i++) {
+		if (secondAS.at(i).getCust().size() > 0) {
+			for (int j = 0; j < secondAS.at(i).getCust().size(); j++) {
+				temp = countCust(secondAS.at(i).getCust().at(j), secondAS);
+			}
+			temp = temp + secondAS.at(i).getCust().size();
+		}
+		if (topAS.size() < 15) {
+			topAS.push_back(secondAS.at(i).getNum());
+			std::sort(topAS.begin(), topAS.end());
+		}
+		else {
+			for (int i = 0; i < 15; i++) {
+				if (temp > topAS.at(i)) {
+					topAS.insert(topAS.begin() + i, temp);
+					topAS.pop_back();
+				}
+			}
+		}
+	}
+	std::cout << "2.4" << std::endl;
+	for (int i = 0; i < 15; i++) {
+		std::cout << topAS.at(i) << std::endl;
+	}*/
 	return 0;
 }
 
