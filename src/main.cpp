@@ -48,6 +48,7 @@ int main(void) {
 	int transitAS = 0;
 	int enterpriseAS = 0;
 	int contentAS = 0;
+	int unknownAS = 0;
 
 	//set up for 2.3
 	for (int i = 0; i < second.size(); i = i + 3) {
@@ -186,12 +187,14 @@ int main(void) {
 			bin200++;
 		else 
 			bin1000++;
-		if (x.second.at(1).size() == 0 && tot <= 2) //Enterprise
-			enterpriseAS++;
-		else if (x.second.at(1).size() == 0 && tot > 0) //Content
-			contentAS++;
-		else if (x.second.at(1).size() > 0) //Transit
+		if (x.second.at(1).size() > 0) //Transit
 			transitAS++;
+		else if (x.second.at(1).size() == 0 && tot <= 2 && x.second.at(0).size() == 0) //Enterprise
+			enterpriseAS++;
+		else if (x.second.at(1).size() == 0 && x.second.at(0).size() > 0) //Content
+			contentAS++;
+		else
+			unknownAS++;
 	}
 
 	std::cout << "Bin 1: " << bin1 << std::endl;
@@ -203,6 +206,7 @@ int main(void) {
 	std::cout << "Transit " << transitAS << std::endl;
 	std::cout << "Enterpise " << enterpriseAS << std::endl;
 	std::cout << "Content " << contentAS << std::endl;
+	std::cout << "Unknown " << unknownAS << std::endl;
 
 	//2.3
 	//degree = connections + customers
