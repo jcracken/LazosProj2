@@ -17,18 +17,9 @@ int main(void) {
 	int content = 0;
 	int j = 0;
 	int k = 0;
-	int bin1 = 0;
-	int bin2 = 0;
-	int bin5 = 0;
-	int bin100 = 0;
-	int bin200 = 0;
-	int bin1000 = 0;
-	int transitAS = 0;
-	int enterpriseAS = 0;
-	int contentAS = 0;
 	std::vector<std::string> first = partOneParse();
 	std::vector<std::string> second = partTwoParse();
-	std::vector<std::string> ipaddr = ipAddrParse();
+	//std::vector<std::string> ipaddr = ipAddrParse();
 	std::vector<AS> secondAS;
 	std::map<int, std::vector<int>> mapAS; //this set holds pairs of {AS_num, Connections(includes customers)}
 
@@ -66,15 +57,7 @@ int main(void) {
 		}
 		if (std::stoi(second.at(i + 2)) == -1) {
 			secondAS.at(j).setCust(std::stoi(second.at(i + 1)));
-			/*secondAS.at(j).setConns(std::stoi(second.at(i + 1)));*/
-			int t1 = std::stoi(second.at(i + 1));
-			for (k = 0; k < secondAS.size(); k++) {
-				if (secondAS.at(k).getNum() == t1) break;
-			}
-			if (k == secondAS.size()) {
-				secondAS.push_back(AS(t1));
-			}
-			secondAS.at(k).setConns(std::stoi(second.at(i)));
+			secondAS.at(j).setConns(std::stoi(second.at(i + 1)));
 		}
 		else {
 			secondAS.at(j).setConns(std::stoi(second.at(i + 1)));
