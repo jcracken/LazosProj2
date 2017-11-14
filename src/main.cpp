@@ -311,16 +311,17 @@ int main(void) {
 	std::cout << "Bin 6-100: " << bin5 << std::endl;
 	std::cout << "Bin 101-200: " << bin100 << std::endl;
 	std::cout << "Bin 201-1000: " << bin200 << std::endl;
-	std::cout << "Bin 1001+: " << bin1000 << std::endl;
+	std::cout << "Bin 1001+: " << bin1000 << std::endl << std::endl;
 	std::cout << "Transit " << transitAS << std::endl;
 	std::cout << "Enterpise " << enterpriseAS << std::endl;
 	std::cout << "Content " << contentAS << std::endl;
+	std::cout << "Unknown " << unknownAS << std::endl << std::endl;
 	std::cout << "Class A: " << classA << std::endl;
 	std::cout << "Class B: " << classB << std::endl;
 	std::cout << "Class C: " << classC << std::endl;
 	std::cout << "Class D: " << classD << std::endl;
 	std::cout << "Class E: " << classE << std::endl;
-	std::cout << "Unknown " << unknownAS << std::endl;
+	
 
 	//2.3
 	//degree = connections + customers
