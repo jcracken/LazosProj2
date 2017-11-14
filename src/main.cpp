@@ -31,6 +31,33 @@ int main(void) {
 	int transitAS = 0;
 	int enterpriseAS = 0;
 	int contentAS = 0;
+
+	//set up for 2.3
+	for (int i = 0; i < second.size(); i = i + 3) {
+		int origin = std::stoi(second.at(i));
+		std::vector<int> originVector;
+		originVector.push_back(origin);
+		int connection = std::stoi(second.at(i + 1));
+		std::vector<int> connectionVector;
+		connectionVector.push_back(connection);
+		int type = std::stoi(second.at(i + 2)); //0 = peer, -1 = customer
+		int temp = 0;
+
+		if (mapAS.count(origin) == 0) {//Origin not found
+			mapAS.insert(std::make_pair(origin, connectionVector));
+		}
+		else {//Origin found
+			mapAS.at(origin).push_back(connection);
+		}
+
+		if (mapAS.count(connection) == 0) {//Connection not found
+			mapAS.insert(std::make_pair(connection, originVector));
+		}
+		else {//Connection found
+			mapAS.at(connection).push_back(origin);
+		}
+	}
+
 	//2.1
 	
 	for (int i = 0; i < first.size(); i++) {
@@ -80,11 +107,6 @@ int main(void) {
 		}
 	}
 	for (j = 0; j < secondAS.size(); j++) {
-		/*if (secondAS.at(j).getNum() == 393406) {
-			for (k = 0; k < secondAS.at(j).getConns().size(); k++) {
-				std::cout << secondAS.at(j).getConns().at(k) << std::endl;
-			}
-		}*/
 		int tot = secondAS.at(j).getConns().size() + secondAS.at(j).getCust().size();
 		if (tot == 1) bin1++;
 		else if (tot <= 5) bin2++;
@@ -118,31 +140,6 @@ int main(void) {
 
 	//2.3
 	//degree = connections + customers
-
-	for (int i = 0; i < second.size(); i=i+3) {
-		int origin = std::stoi(second.at(i));
-		std::vector<int> originVector;
-		originVector.push_back(origin);
-		int connection = std::stoi(second.at(i + 1));
-		std::vector<int> connectionVector;
-		connectionVector.push_back(connection);
-		int type = std::stoi(second.at(i + 2)); //0 = peer, -1 = customer
-		int temp = 0;
-
-		if (mapAS.count(origin) == 0) {//Origin not found
-			mapAS.insert(std::make_pair(origin, connectionVector));
-		}
-		else {//Origin found
-			mapAS.at(origin).push_back(connection);
-		}
-
-		if (mapAS.count(connection) == 0) {//Connection not found
-			mapAS.insert(std::make_pair(connection, originVector));
-		}
-		else {//Connection found
-			mapAS.at(connection).push_back(origin);
-		}
-	}
 
 	std::ofstream output;
 	output.open("out3.txt");
