@@ -50,7 +50,7 @@ int main(void) {
 	int temp = 0;
 	std::vector<std::string> first = partOneParse();
 	std::vector<std::string> second = partTwoParse();
-	//std::vector<std::string> ipaddr = ipAddrParse();
+	std::vector<std::string> ipaddr = ipAddrParse();
 	std::vector<std::string> four;
 	std::vector<AS> secondAS;
 	std::vector<int> topAS;
@@ -64,6 +64,11 @@ int main(void) {
 	int transitAS = 0;
 	int enterpriseAS = 0;
 	int contentAS = 0;
+	int classA = 0;
+	int classB = 0;
+	int classC = 0;
+	int classD = 0;
+	int classE = 0;
 	int unknownAS = 0;
 
 	//set up for 2.3
@@ -171,6 +176,55 @@ int main(void) {
 		}
 	}
 
+	std::map<long long, std::vector<std::string>> mapASWithIP; //this set holds pairs of {AS_num, IP Strings}
+	for (int i = 0; i < ipaddr.size(); i = i + 3) {
+		if (ipaddr.at(i + 2).find('_') != std::string::npos) {
+			std::string s = ipaddr.at(i + 2);
+			std::vector<std::string> nodeList;
+			auto start = 0;
+			auto end = s.find('_');
+			while (end != std::string::npos)
+			{
+				nodeList.push_back(s.substr(start, end - start));
+				start = end + 1;
+				end = s.find('_', start);
+			}
+			for (int j = 0; j < nodeList.size(); j++) {
+				long long origin = std::stoll(nodeList.at(j));
+				std::string ip = ipaddr.at(i);
+				std::vector<std::string> ipAddr;
+
+				//time for origin input
+				if (mapASWithIP.count(origin) == 0) {
+					//Origin not found
+					ipAddr.push_back(ip);
+					mapASWithIP.insert(std::make_pair(origin, ipAddr));
+				}
+				else {
+					//Origin found
+					mapASWithIP.at(origin).push_back(ip);
+				}
+			}
+		}
+		else {
+			long long origin = std::stoll(ipaddr.at(i + 2));
+
+			std::string ip = ipaddr.at(i);
+			std::vector<std::string> ipAddr;
+
+			//time for origin input
+			if (mapASWithIP.count(origin) == 0) {
+				//Origin not found
+				ipAddr.push_back(ip);
+				mapASWithIP.insert(std::make_pair(origin, ipAddr));
+			}
+			else {
+				//Origin found
+				mapASWithIP.at(origin).push_back(ip);
+			}
+		}
+	}
+
 	//2.1
 	
 	for (int i = 0; i < first.size(); i++) {
@@ -212,6 +266,45 @@ int main(void) {
 		else
 			unknownAS++;
 	}
+	for (auto const& x : mapASWithIP) {
+		bool cA = true;
+		bool cB = true;
+		bool cC = true;
+		bool cD = true;
+		bool cE = true;
+		for (int i = 0; i < x.second.size(); i++) {
+			std::string s = x.second.at(i);
+			std::vector<std::string> nodeList;
+			auto start = 0;
+			auto end = s.find('.');
+			while (end != std::string::npos)
+			{
+				nodeList.push_back(s.substr(start, end - start));
+				start = end + 1;
+				end = s.find('.', start);
+			}
+			if (std::stoi(nodeList.at(0)) <= 127 && cA) {
+				classA++;
+				cA = false;
+			}
+			else if (std::stoi(nodeList.at(0)) <= 191 && cB) {
+				classB++;
+				cB = false;
+			}
+			else if (std::stoi(nodeList.at(0)) <= 223 && cC) {
+				classC++;
+				cC = false;
+			}
+			else if (std::stoi(nodeList.at(0)) <= 239 && cD) {
+				classD++;
+				cD = false;
+			}
+			else if (std::stoi(nodeList.at(0)) <= 255 && cE) {
+				classE++;
+				cE = false;
+			}
+		}
+	}
 
 	std::cout << "Bin 1: " << bin1 << std::endl;
 	std::cout << "Bin 2-5: " << bin2 << std::endl;
@@ -222,6 +315,11 @@ int main(void) {
 	std::cout << "Transit " << transitAS << std::endl;
 	std::cout << "Enterpise " << enterpriseAS << std::endl;
 	std::cout << "Content " << contentAS << std::endl;
+	std::cout << "Class A: " << classA << std::endl;
+	std::cout << "Class B: " << classB << std::endl;
+	std::cout << "Class C: " << classC << std::endl;
+	std::cout << "Class D: " << classD << std::endl;
+	std::cout << "Class E: " << classE << std::endl;
 	std::cout << "Unknown " << unknownAS << std::endl;
 
 	//2.3
