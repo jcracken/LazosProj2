@@ -58,6 +58,85 @@ int main(void) {
 		}
 	}
 
+	//Set up for 2.2
+	std::map<int, std::vector<std::vector<int>>> mapASWithCust; //this set holds pairs of {AS_num, Connections[[peers], [customers], [providers]]}
+	for (int i = 0; i < second.size(); i = i + 3) {
+		int origin = std::stoi(second.at(i));
+		std::vector<std::vector<int>> originVector;
+		std::vector<int> originVectorPeers;
+		std::vector<int> originVectorCustomers;
+		std::vector<int> originVectorProviders;
+
+		originVector.push_back(originVectorPeers);
+		originVector.push_back(originVectorCustomers);
+		originVector.push_back(originVectorProviders);
+
+		int connection = std::stoi(second.at(i + 1));
+		std::vector<std::vector<int>> connectionVector;
+		std::vector<int> connectionVectorPeers;
+		std::vector<int> connectionVectorCustomers;
+		std::vector<int> connectionVectorProviders;
+
+		connectionVector.push_back(connectionVectorPeers);
+		connectionVector.push_back(connectionVectorCustomers);
+		connectionVector.push_back(connectionVectorProviders);
+
+		int type = std::stoi(second.at(i + 2)); //0 = peer, -1 = customer
+		int temp = 0;
+
+		//time for origin input
+		if (mapASWithCust.count(origin) == 0) {
+			//Origin not found
+			if (type == 0) {
+				//connection is peer
+				originVector.at(0).push_back(connection);
+				mapASWithCust.insert(std::make_pair(origin, originVector));
+			}
+			else {
+				//connection is customer
+				originVector.at(1).push_back(connection);
+				mapASWithCust.insert(std::make_pair(origin, originVector));
+			}
+		}
+		else {
+			//Origin found
+			if (type == 0) {
+				//connection is peer
+				mapASWithCust.at(origin).at(0).push_back(connection);
+			}
+			else {
+				//connection is customer
+				mapASWithCust.at(origin).at(1).push_back(connection);
+			}
+		}
+
+		//Now time for connections
+		if (mapASWithCust.count(connection) == 0) {
+			//Connection not found
+			if (type == 0) {
+				//Origin is peer
+				connectionVector.at(0).push_back(origin);
+				mapASWithCust.insert(std::make_pair(connection, connectionVector));
+			}
+			else {
+				//Origin is provider
+				connectionVector.at(2).push_back(origin);
+				mapASWithCust.insert(std::make_pair(connection, connectionVector));
+			}
+		}
+		else {
+			//Connection found
+			if (type == 0) {
+				//Origin is peer
+				mapASWithCust.at(connection).at(0).push_back(origin);
+			}
+			else {
+				//Origin is provider
+				mapASWithCust.at(connection).at(2).push_back(origin);
+			}
+		}
+	}
+
 	//2.1
 	
 	for (int i = 0; i < first.size(); i++) {
@@ -75,65 +154,35 @@ int main(void) {
 	std::cout << "Enterpise " << enterprise << std::endl;
 	std::cout << "Content " << content << std::endl;
 
-	//2.2
-	for (int i = 0; i < second.size(); i = i + 3) {
-		int temp = std::stoi(second.at(i));
-		if (i == 0) { //idk if this if branch is needed lol
-			secondAS.push_back(AS(temp));
-			j = 0;
-		}
-		else {
-			for (j = 0; j < secondAS.size(); j++) {
-				if (secondAS.at(j).getNum() == temp) break;
-			}
-			if (j == secondAS.size()) {
-				secondAS.push_back(AS(temp));
-			}
-		}
-		if (std::stoi(second.at(i + 2)) == -1) {
-			secondAS.at(j).setCust(std::stoi(second.at(i + 1)));
-			secondAS.at(j).setConns(std::stoi(second.at(i + 1)));
-		}
-		else {
-			secondAS.at(j).setConns(std::stoi(second.at(i + 1)));
-			int t1 = std::stoi(second.at(i + 1));
-			for (k = 0; k < secondAS.size(); k++) {
-				if (secondAS.at(k).getNum() == t1) break;
-			}
-			if (k == secondAS.size()) {
-				secondAS.push_back(AS(t1));
-			}
-			secondAS.at(k).setConns(std::stoi(second.at(i)));
-		}
+	//2.2 p2 w/ maps try: 
+	for (auto const& x : mapASWithCust) {
+		int tot = x.second.at(0).size() + x.second.at(1).size() + x.second.at(2).size();
+		if (tot == 1) 
+			bin1++;
+		else if (tot <= 5) 
+			bin2++;
+		else if (tot <= 100) 
+			bin5++;
+		else if (tot <= 200) 
+			bin100++;
+		else if (tot <= 1000) 
+			bin200++;
+		else 
+			bin1000++;
+		if (x.second.at(1).size() == 0 && tot <= 2) //Enterprise
+			enterpriseAS++;
+		else if (x.second.at(1).size() == 0 && tot > 0) //Content
+			contentAS++;
+		else if (x.second.at(1).size() > 0) //Transit
+			transitAS++;
 	}
-	for (j = 0; j < secondAS.size(); j++) {
-		int tot = secondAS.at(j).getConns().size() + secondAS.at(j).getCust().size();
-		if (tot == 1) bin1++;
-		else if (tot <= 5) bin2++;
-		else if (tot <= 100) bin5++;
-		else if (tot <= 200) bin100++;
-		else if (tot <= 1000) bin200++;
-		else bin1000++;
-		if (secondAS.at(j).getCust().size() == 0 &&  tot <= 2) enterpriseAS++;
-		else if (secondAS.at(j).getCust().size() == 0 && tot > 0) contentAS++;
-		else if (secondAS.at(j).getCust().size() > 0) transitAS++;
-		/*for (k = 0; k < ipaddr.size(); k = k + 3) {
-			try {
-				if (std::stol(ipaddr.at(k + 2)) == secondAS.at(j).getNum()) {
-					secondAS.at(j).setIP(ipaddr.at(k));
-				}
-			}
-			catch (std::out_of_range& e) {
-				//shrug
-			}
-		}*/
-	}
-	std::cout << bin1 << std::endl;
-	std::cout << bin2 << std::endl;
-	std::cout << bin5 << std::endl;
-	std::cout << bin100 << std::endl;
-	std::cout << bin200 << std::endl;
-	std::cout << bin1000 << std::endl;
+
+	std::cout << "Bin 1: " << bin1 << std::endl;
+	std::cout << "Bin 2-5: " << bin2 << std::endl;
+	std::cout << "Bin 6-100: " << bin5 << std::endl;
+	std::cout << "Bin 101-200: " << bin100 << std::endl;
+	std::cout << "Bin 201-1000: " << bin200 << std::endl;
+	std::cout << "Bin 1001+: " << bin1000 << std::endl;
 	std::cout << "Transit " << transitAS << std::endl;
 	std::cout << "Enterpise " << enterpriseAS << std::endl;
 	std::cout << "Content " << contentAS << std::endl;
