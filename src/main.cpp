@@ -53,6 +53,7 @@ int main(void) {
 	int classC = 0;
 	int classD = 0;
 	int classE = 0;
+	int unknownAS = 0;
 
 	//set up for 2.3
 	for (int i = 0; i < second.size(); i = i + 3) {
@@ -240,12 +241,14 @@ int main(void) {
 			bin200++;
 		else 
 			bin1000++;
-		if (x.second.at(1).size() == 0 && tot <= 2) //Enterprise
-			enterpriseAS++;
-		else if (x.second.at(1).size() == 0 && tot > 0) //Content
-			contentAS++;
-		else if (x.second.at(1).size() > 0) //Transit
+		if (x.second.at(1).size() > 0) //Transit
 			transitAS++;
+		else if (x.second.at(1).size() == 0 && tot <= 2 && x.second.at(0).size() == 0) //Enterprise
+			enterpriseAS++;
+		else if (x.second.at(1).size() == 0 && x.second.at(0).size() > 0) //Content
+			contentAS++;
+		else
+			unknownAS++;
 	}
 	for (auto const& x : mapASWithIP) {
 		bool cA = true;
@@ -301,6 +304,7 @@ int main(void) {
 	std::cout << "Class C: " << classC << std::endl;
 	std::cout << "Class D: " << classD << std::endl;
 	std::cout << "Class E: " << classE << std::endl;
+	std::cout << "Unknown " << unknownAS << std::endl;
 
 	//2.3
 	//degree = connections + customers
