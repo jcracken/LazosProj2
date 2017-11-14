@@ -176,5 +176,7 @@ int main(void) {
 		output << std::to_string(s.at(i)) + "\n";
 	}
 	output.close();
+
+	//2.4 goes below here
 	return 0;
 }
