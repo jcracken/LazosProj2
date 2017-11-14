@@ -240,7 +240,7 @@ int main(void) {
 	}
 	std::cout << "Transit " << transit << std::endl;
 	std::cout << "Enterpise " << enterprise << std::endl;
-	std::cout << "Content " << content << std::endl;
+	std::cout << "Content " << content << std::endl << std::endl;
 
 	//2.2
 	for (auto const& x : mapASWithCust) {
