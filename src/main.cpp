@@ -22,7 +22,15 @@ int main(void) {
 	//std::vector<std::string> ipaddr = ipAddrParse();
 	std::vector<AS> secondAS;
 	std::map<int, std::vector<int>> mapAS; //this set holds pairs of {AS_num, Connections(includes customers)}
-
+	int bin1 = 0;
+	int bin2 = 0;
+	int bin5 = 0;
+	int bin100 = 0;
+	int bin200 = 0;
+	int bin1000 = 0;
+	int transitAS = 0;
+	int enterpriseAS = 0;
+	int contentAS = 0;
 	//2.1
 	
 	for (int i = 0; i < first.size(); i++) {
