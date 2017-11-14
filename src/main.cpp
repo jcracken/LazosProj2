@@ -25,6 +25,22 @@
 	}
 }*/
 
+// for 2.3, inspiration from stack overflow
+template<typename A, typename B>
+std::pair<B, A> flip_pair(const std::pair<A, B> &p)
+{
+	return std::pair<B, A>(p.second, p.first);
+}
+
+template<typename A, typename B>
+std::multimap<B, A> flip_map(const std::map<A, B> &src)
+{
+	std::multimap<B, A> dst;
+	std::transform(src.begin(), src.end(), std::inserter(dst, dst.begin()),
+		flip_pair<A, B>);
+	return dst;
+}
+
 int main(void) {
 	int transit = 0;
 	int enterprise = 0;
@@ -211,13 +227,20 @@ int main(void) {
 	//2.3
 	//degree = connections + customers
 
-	std::ofstream output;
-	output.open("out3.txt");
-	output << "AS\tDegree";
-	for (auto const& x : mapAS) {
-		output << std::to_string(x.first) + "\t" + std::to_string(x.second.size()) + "\n";
-	}
-	output.close();
+	//std::ofstream output;
+	//output.open("out3.txt");
+	//output << "AS\tDegree\n";
+
+	//std::map<int, int> inputMap;
+	//for (auto const& x : mapAS) {
+	//	inputMap.insert(std::make_pair(x.first, x.second.size()));
+	//}
+
+	//std::multimap<int, int> sorted = flip_map(inputMap);
+	//for (auto const& x : sorted) {
+	//	output << std::to_string(x.second) + "\t" + std::to_string(x.first) + "\n";
+	//}
+	//output.close();
 
 	//2.4
 	/*for (int i = 0; i < secondAS.size(); i++) {
@@ -247,18 +270,3 @@ int main(void) {
 	return 0;
 }
 
-// for 2.3, inspiration from stack overflow
-template<typename A, typename B>
-std::pair<B, A> flip_pair(const std::pair<A, B> &p)
-{
-	return std::pair<B, A>(p.second, p.first);
-}
-
-template<typename A, typename B>
-std::multimap<B, A> flip_map(const std::map<A, B> &src)
-{
-	std::multimap<B, A> dst;
-	std::transform(src.begin(), src.end(), std::inserter(dst, dst.begin()),
-		flip_pair<A, B>);
-	return dst;
-}
